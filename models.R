@@ -48,25 +48,25 @@ saveRDS(interference, file="interference.rds")
 
 
 
-
-
 treatments <-brm(
-    bf(time_between_visits ~  exp(rate) + (b * Bombus) + (a * Apis) + (o * Osmia) + (m * Megachile),
-      rate ~ 1 + neonic + refill  + (1 + neonic + refill | beeCor | beeID),
-      b ~ 1 + neonic + refill  + (1 + neonic + refill | beeCor | beeID),
-      a ~ 1 + neonic + refill  + (1 + neonic + refill | beeCor | beeID),
-      o ~ 1 + neonic + refill  + (1 + neonic + refill | beeCor | beeID),
-      m ~ 1 + neonic + refill  + (1 + neonic + refill | beeCor | beeID),
-      nl = T
-    ),
-    inits=0,
-    data = dat,
-    family = exponential(link = "identity"),
-    iter = 5000,
-    warmup = 3000,
-    cores = 4,
-    chains = 4,
-    control = list(adapt_delta = .99 , max_treedepth = 13)
-  )
+  bf(time_between_visits ~  exp(rate) + (b * Bombus) + (a * Apis) + (o * Osmia) + (m * Megachile),
+     rate ~ 1 + neonic_treatment  + time_between_floral_refill + (1 + time_between_floral_refill +neonic_treatment | beeCor | beeID),
+     b ~ 1 + neonic_treatment  + time_between_floral_refill + (1 + time_between_floral_refill +neonic_treatment | beeCor | beeID),
+     a ~ 1 + neonic_treatment  + time_between_floral_refill + (1 + time_between_floral_refill +neonic_treatment | beeCor | beeID),
+     o ~ 1 + neonic_treatment  + time_between_floral_refill + (1 + time_between_floral_refill +neonic_treatment | beeCor | beeID),
+     m ~ 1 + neonic_treatment  + time_between_floral_refill + (1 + time_between_floral_refill +neonic_treatment | beeCor | beeID),
+     nl = T
+  ),
+  inits = 0,
+  data = dat,
+  family = exponential(link = "identity"),
+  iter = 5000,
+  warmup = 3000,
+  cores = 4,
+  chains = 4,
+  control = list(adapt_delta = .99 , max_treedepth = 13)
+)
+
+
 
 saveRDS(treatments, file="treatments.rds")
