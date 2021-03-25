@@ -10,6 +10,7 @@ null <- brm(
   bf(time_between_visits ~  exp(rate),
      rate ~  1 + (1 | beeCor | beeID),
      nl = T),
+  inits = 0,
   data = dat,
   family = exponential(link = "identity"),
   iter = 5000,
@@ -24,14 +25,15 @@ saveRDS(null, file="null.rds")
 
 #the interference model only uses species abundances as predictors
 interference <-brm(
-    bf(time_between_visits ~  exp(rate) + (beta_b * Bombus) + (beta_a * Apis) + (beta_o * Osmia) + (beta_m * Megachile),
+    bf(time_between_visits ~  exp(rate) + (b * Bombus) + (a * Apis) + (o * Osmia) + (m * Megachile),
       rate ~ 1  + (1 | beeCor | beeID),
-      beta_b ~ 1 + (1 | beeCor | beeID),
-      beta_a ~ 1 + (1 | beeCor | beeID),
-      beta_o ~ 1 + (1 | beeCor | beeID),
-      beta_m ~ 1 + (1 | beeCor | beeID),
+      b ~ 1 + (1 | beeCor | beeID),
+      a ~ 1 + (1 | beeCor | beeID),
+      o ~ 1 + (1 | beeCor | beeID),
+      m ~ 1 + (1 | beeCor | beeID),
       nl = T
     ),
+    inits = 0,
     data = dat,
     family = exponential(link = "identity"),
     iter = 5000,
@@ -49,14 +51,15 @@ saveRDS(interference, file="interference.rds")
 
 
 treatments <-brm(
-    bf(time_between_visits ~  exp(rate) + (beta_b * Bombus) + (beta_a * Apis) + (beta_o * Osmia) + (beta_m * Megachile),
+    bf(time_between_visits ~  exp(rate) + (b * Bombus) + (a * Apis) + (o * Osmia) + (m * Megachile),
       rate ~ 1 + neonic + refill  + (1 + neonic + refill | beeCor | beeID),
-      beta_b ~ 1 + neonic + refill  + (1 + neonic + refill | beeCor | beeID),
-      beta_a ~ 1 + neonic + refill  + (1 + neonic + refill | beeCor | beeID),
-      beta_o ~ 1 + neonic + refill  + (1 + neonic + refill | beeCor | beeID),
-      beta_m ~ 1 + neonic + refill  + (1 + neonic + refill | beeCor | beeID),
+      b ~ 1 + neonic + refill  + (1 + neonic + refill | beeCor | beeID),
+      a ~ 1 + neonic + refill  + (1 + neonic + refill | beeCor | beeID),
+      o ~ 1 + neonic + refill  + (1 + neonic + refill | beeCor | beeID),
+      m ~ 1 + neonic + refill  + (1 + neonic + refill | beeCor | beeID),
       nl = T
     ),
+    inits=0,
     data = dat,
     family = exponential(link = "identity"),
     iter = 5000,
